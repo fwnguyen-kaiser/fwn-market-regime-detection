@@ -1,0 +1,264 @@
+{
+  "filename": "AAPL_2024-01-01_2024-12-31.csv",
+  "total_days": 232,
+  "n_states": 4,
+  "features_used": [
+    "Log_Return",
+    "Volatility"
+  ],
+  "model_selection": [
+    {
+      "n_states": 2,
+      "bic": 1126.1102942815553,
+      "aic": 1081.3027084498933,
+      "log_likelihood": -527.6513542249467
+    },
+    {
+      "n_states": 3,
+      "bic": 1175.9434318026729,
+      "aic": 1096.6684722543478,
+      "log_likelihood": -525.3342361271739
+    },
+    {
+      "n_states": 4,
+      "bic": 1053.5267582736751,
+      "aic": 932.8909502653541,
+      "log_likelihood": -431.4454751326771
+    },
+    {
+      "n_states": 5,
+      "bic": 1076.1423978920093,
+      "aic": 907.2522666803601,
+      "log_likelihood": -404.62613334018005
+    }
+  ],
+  "training_stats": {
+    "log_likelihood": -431.4454751326771,
+    "aic": 932.8909502653541,
+    "bic": 1053.5267582736751,
+    "n_params": 35,
+    "n_iter": 45,
+    "converged": true
+  },
+  "regime_mapping": {
+    "2": "Bear",
+    "0": "Low_Volatility",
+    "3": "High_Volatility",
+    "1": "Bull"
+  },
+  "state_statistics": {
+    "0": {
+      "count": 93,
+      "mean_return": -0.00012107441185426846,
+      "std_return": 0.010914481851219505,
+      "mean_volatility": 0.010057843231815664,
+      "std_volatility": 0.001529779682498698
+    },
+    "1": {
+      "count": 43,
+      "mean_return": 0.005974787277358672,
+      "std_return": 0.021991602060186292,
+      "mean_volatility": 0.01889027615343557,
+      "std_volatility": 0.001588227200446604
+    },
+    "2": {
+      "count": 73,
+      "mean_return": -0.00045113397665061644,
+      "std_return": 0.013283077150510096,
+      "mean_volatility": 0.014616982646712386,
+      "std_volatility": 0.0008266815357466426
+    },
+    "3": {
+      "count": 23,
+      "mean_return": 0.0032070282502778486,
+      "std_return": 0.006957677201406966,
+      "mean_volatility": 0.01640562147162264,
+      "std_volatility": 0.00031882930296177597
+    }
+  },
+  "persistence": {
+    "total_switches": 24,
+    "avg_duration": 9.28,
+    "median_duration": 7.0,
+    "min_duration": 1,
+    "max_duration": 44,
+    "persistence_score": 0.039999999999999994,
+    "duration_by_regime": {
+      "Low_Volatility": {
+        "avg": 23.25,
+        "count": 4
+      },
+      "Bull": {
+        "avg": 7.166666666666667,
+        "count": 6
+      },
+      "Bear": {
+        "avg": 8.11111111111111,
+        "count": 9
+      },
+      "High_Volatility": {
+        "avg": 3.8333333333333335,
+        "count": 6
+      }
+    },
+    "quality": "\ud83d\udd34 POOR - Too much switching (overfitting?)"
+  },
+  "current_regime": "Low_Volatility",
+  "current_state": 0,
+  "regime_history": [
+    {
+      "date": "2024-11-18",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-11-19",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-11-20",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-11-21",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-11-22",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-11-25",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-11-26",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-11-27",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-11-29",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-02",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-03",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-04",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-05",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-06",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-09",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-10",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-11",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-12",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-13",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-16",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-17",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-18",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-19",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-20",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-23",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-24",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-26",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-27",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-30",
+      "regime": "Low_Volatility"
+    },
+    {
+      "date": "2024-12-31",
+      "regime": "Low_Volatility"
+    }
+  ],
+  "model_params": {
+    "start_probs": [
+      5.545785444788026e-87,
+      1.916609087109598e-178,
+      1.0,
+      0.0
+    ],
+    "transition_matrix": [
+      [
+        0.9672404406153366,
+        0.010957295196962263,
+        0.02180226418770099,
+        2.7678849815093545e-165
+      ],
+      [
+        9.71946614056029e-98,
+        0.8509543509670849,
+        0.02707282658072688,
+        0.12197282245218817
+      ],
+      [
+        0.05419646410117105,
+        0.05497596931681271,
+        0.8770883390941457,
+        0.01373922748787039
+      ],
+      [
+        5.57560880162583e-16,
+        0.060152629356250584,
+        0.22247334364199625,
+        0.7173740270017526
+      ]
+    ]
+  }
+}
