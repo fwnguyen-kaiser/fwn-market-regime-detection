@@ -66,3 +66,6 @@ def analyze_regime(req: AnalyzeRequest):
     except Exception as e:
         logger.error(f"❌ [Analyze] Error during analysis: {str(e)}", exc_info=True)
         raise HTTPException(status_code=400, detail=str(e))
+@router.get("/")
+def market_root():
+    return {"message": "Market router is alive"}

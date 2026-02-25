@@ -13,7 +13,7 @@ class RegimeDetector:
     Steps 4-8: Chọn n_states → Fit → Decode → Meaning → Validate
     """
     
-    def __init__(self, n_states: int = None, random_state: int = None):
+    def __init__(self, n_states: int = None, random_state: int = None): # pyright: ignore[reportArgumentType]
         """
         Step 4: Initialize HMM with config
         """
@@ -323,9 +323,9 @@ class ModelSelector:
     
     @staticmethod
     def select_best_n_states(features: np.ndarray, 
-                            min_states: int = None, 
-                            max_states: int = None,
-                            random_state: int = None) -> dict:
+                            min_states: int = None,  # pyright: ignore[reportArgumentType]
+                            max_states: int = None, # pyright: ignore[reportArgumentType]
+                            random_state: int = None) -> dict: # pyright: ignore[reportArgumentType]
         """
         Test multiple n_states and choose best based on BIC
         """

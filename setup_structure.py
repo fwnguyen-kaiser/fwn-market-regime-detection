@@ -1,6 +1,5 @@
 import os
 
-# Cấu trúc thư mục Backend
 structure = {
     "backend": [
         "app/__init__.py",
@@ -28,7 +27,6 @@ structure = {
         "requirements.txt",
     ],
     "frontend": [
-        # Frontend mình đã init bằng Vite rồi nên chỉ tạo thêm mấy folder con thôi
         "src/components/ui/.gitkeep",
         "src/components/charts/.gitkeep",
         "src/hooks/.gitkeep",
@@ -38,7 +36,6 @@ structure = {
     ]
 }
 
-# Nội dung mẫu cho file main.py để test server
 main_py_content = """from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -71,27 +68,23 @@ def create_structure():
             full_path = os.path.join(base_dir, root_folder, file_path)
             directory = os.path.dirname(full_path)
             
-            # 1. Tạo thư mục nếu chưa có
             if not os.path.exists(directory):
                 os.makedirs(directory)
                 print(f"📁 Created dir: {directory}")
             
-            # 2. Tạo file rỗng nếu chưa có
             if not os.path.exists(full_path):
                 with open(full_path, 'w', encoding='utf-8') as f:
-                    # Nếu là file main.py thì ghi nội dung mẫu vào
                     if file_path == "app/main.py":
                         f.write(main_py_content)
-                    # Nếu là .env thì ghi mẫu
                     elif file_path == ".env":
                         f.write("FMP_API_KEY=your_api_key_here")
                     else:
-                        pass # File rỗng
+                        pass 
                 print(f"📄 Created file: {full_path}")
             else:
                 print(f"⚠️ File existed: {full_path}")
 
-    print("\n✅ XONG PHIM! Cấu trúc đã chuẩn cơm mẹ nấu.")
+    print("\n✅ XONG.")
 
 if __name__ == "__main__":
     create_structure()
