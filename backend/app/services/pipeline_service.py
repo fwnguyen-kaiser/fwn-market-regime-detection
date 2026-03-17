@@ -6,29 +6,16 @@ from app.services.data_service import DataService
 from app.engine.features import HMMPreprocessor
 from app.engine.hmm_model import RegimeDetector, HMMPredictor
 from app.engine.model_config import model_config
+from app.engine.walk_forward import walk_forward_validation
 
 logger = logging.getLogger(__name__)
 
 class PipelineService:
-    """
-    Orchestrates the complete market regime detection workflow.
-    Handles: data ingestion → feature engineering → HMM training → prediction
-    """
     
     def __init__(self):
         self.data_service = DataService()
     
     def run_analysis_on_file(self, filename: str, n_states: int = None) -> dict:
-        """
-        Execute full HMM analysis pipeline on dataset.
-        
-        Args:
-            filename: CSV file in data directory
-            n_states: Number of hidden states (default: use config)
-        
-        Returns:
-            dict: Complete analysis with training stats, regimes, prediction
-        """
         logger.info("="*60)
         logger.info(f"🚀 PIPELINE START: {filename}")
         logger.info("="*60)
@@ -40,7 +27,9 @@ class PipelineService:
             logger.error(f"❌ Dataset not found: {e}")
             raise
         
-        # Limit data to recent window for better model sensitivity
+        # ✅ FIX 1: Save full data BEFORE truncation
+        df_raw_full = df_raw.copy()
+
         max_days = model_config.MAX_TRAINING_DAYS
         original_length = len(df_raw)
         
@@ -72,6 +61,19 @@ class PipelineService:
         
         # === Step 8: Validate Persistence ===
         persistence = detector.validate_persistence(states)
+
+        # ✅ FIX 2: Walk-forward wrapped in try/except so it never breaks /analyze
+        wf_summary = None
+        try:
+            prep_full = HMMPreprocessor.csv_to_features(df_raw_full)
+            wf_summary = walk_forward_validation(
+                df=prep_full['df'],
+                feature_cols=prep_full['feature_cols'],
+                n_states=n_states,
+            )
+            logger.info(f"✅ Walk-forward done: {wf_summary['n_folds']} folds")
+        except Exception as e:
+            logger.warning(f"⚠️ Walk-forward skipped: {e}")
         
         # === Step 9: Predict t+1 ===
         predictor = HMMPredictor(detector, state_stats)
@@ -84,18 +86,17 @@ class PipelineService:
         current_state = int(states[-1])
         current_regime = detector.regime_mapping.get(current_state, "Unknown")
         
-        # Get last 30 days of regime history
-        lookback = 30
-        recent_states = states[-lookback:] if len(states) >= lookback else states
-        recent_dates = df.index[-len(recent_states):]
+        recent_states = states          # all states, no cutoff
+        recent_dates = df.index
         
         regime_history = [
-            {
-                'date': date.strftime('%Y-%m-%d'),
-                'regime': detector.regime_mapping.get(s, "Unknown")
-            }
-            for date, s in zip(recent_dates, recent_states)
-        ]
+    {
+        'date': date.strftime('%Y-%m-%d'),
+        'regime': detector.regime_mapping.get(s, "Unknown"),
+        'close': float(df.loc[date, 'Close']) if 'Close' in df.columns else None
+    }
+    for date, s in zip(recent_dates, recent_states)
+]
         
         model_params = detector.get_model_params()
         
@@ -108,7 +109,7 @@ class PipelineService:
             "total_days": len(df),
             "n_states": n_states,
             "features_used": prep_result['feature_cols'],
-            "model_selection": None,  # Not using auto-selection
+            "model_selection": None,
             "training_stats": detector.training_stats,
             "regime_mapping": detector.regime_mapping,
             "state_statistics": state_stats,
@@ -120,5 +121,6 @@ class PipelineService:
             "model_params": {
                 "start_probs": model_params['start_probs'].tolist(),
                 "transition_matrix": model_params['transition_matrix'].tolist(),
-            }
+            },
+            "walk_forward": wf_summary,  # ✅ FIX 3: Added to return dict
         }

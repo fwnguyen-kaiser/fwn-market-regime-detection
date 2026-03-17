@@ -2,6 +2,7 @@
 export interface RegimeHistoryItem {
   date: string;
   regime: string;
+  close?: number;
 }
 
 export interface PersistenceMetrics {
@@ -63,4 +64,51 @@ export interface PredictionResult {
   expected_return: number;
   expected_volatility: number;
   confidence: number;
+}
+export interface FoldResult {
+  fold: number;
+  train_range: [number, number];
+  test_range: [number, number];
+  regime_counts: Record<string, number>;
+  n_switches: number;
+  bic: number;
+  converged: boolean;
+  n_iter: number;
+}
+
+export interface WalkForwardSummary {
+  n_folds: number;
+  mean_bic: number;
+  std_bic: number;
+  min_bic: number;
+  max_bic: number;
+  mean_switches: number;
+  converged_folds: number;
+  fold_results: FoldResult[];
+}
+
+export interface AnalysisResult {
+  filename: string;
+  total_days: number;
+  n_states: number;
+  features_used: string[];
+  model_selection: Array<{
+    n_states: number;
+    bic: number;
+    aic: number;
+    log_likelihood: number;
+  }> | null;
+  training_stats: TrainingStats;
+  regime_mapping: Record<number, string>;
+  state_statistics: Record<number, StateStatistics>;
+  persistence: PersistenceMetrics;
+  current_regime: string;
+  current_state: number;
+  prediction: PredictionResult;
+  regime_history: RegimeHistoryItem[];
+  model_params: {
+    start_probs: number[];
+    transition_matrix: number[][];
+  };
+  walk_forward: WalkForwardSummary | null;  // ✅ NEW — matches Optional in Python schema
 }

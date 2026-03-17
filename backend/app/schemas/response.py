@@ -30,7 +30,27 @@ class PredictionResponse(BaseModel):
     expected_return: float
     expected_volatility: float
     confidence: float
+class FoldResult(BaseModel):
+    """Result from a single walk-forward fold."""
+    fold: int
+    train_range: List[int]
+    test_range: List[int]
+    regime_counts: Dict[str, int]
+    n_switches: int
+    bic: float
+    converged: bool
+    n_iter: int
 
+class WalkForwardSummary(BaseModel):
+    """Summary of walk-forward validation across all folds."""
+    n_folds: int
+    mean_bic: float
+    std_bic: float
+    min_bic: float
+    max_bic: float
+    mean_switches: float
+    converged_folds: int
+    fold_results: List[FoldResult]
 class AnalysisResponse(BaseModel):
     """
     Comprehensive schema for the full HMM analysis output.
@@ -55,3 +75,4 @@ class AnalysisResponse(BaseModel):
     prediction: PredictionResponse
     regime_history: List[RegimeHistoryItem]
     model_params: Dict[str, Any]
+    walk_forward: Optional[WalkForwardSummary] = None

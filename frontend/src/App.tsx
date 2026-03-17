@@ -5,6 +5,8 @@ import { CurrentStatus, TripleStats, StabilityMetrics } from "./components/Regim
 import { PredictionCard } from "./components/PredictionCard";
 import type { AnalysisResult } from "./types/regime";
 import "./App.css";
+import { WalkForwardPanel } from "./components/WalkForwardPanel";
+
 
 function App() {
   // ... (Giữ nguyên toàn bộ logic state và hàm handle, không thay đổi gì)
@@ -121,7 +123,10 @@ function App() {
             <div className="area-stability">
               <StabilityMetrics result={analysisResult} />
             </div>
-
+            {/* ROW 4: WALK-FORWARD VALIDATION */}
+            <div className="area-walkforward">
+              <WalkForwardPanel data={analysisResult.walk_forward} />
+            </div>
             {/* COL 1-3: CHART (Row 4) */}
             <div className="area-chart">
               <RegimeChart result={analysisResult} />

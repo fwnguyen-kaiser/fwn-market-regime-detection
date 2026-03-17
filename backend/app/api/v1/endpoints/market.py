@@ -4,6 +4,8 @@ from app.services.data_service import DataService
 from app.services.pipeline_service import PipelineService
 from app.schemas.request import FetchRequest, AnalyzeRequest
 from app.schemas.response import MessageResponse, AnalysisResponse
+from app.engine.walk_forward import walk_forward_validation
+from app.engine.features import HMMPreprocessor
 
 # Initialize logger for this module
 logger = logging.getLogger(__name__)
@@ -69,3 +71,29 @@ def analyze_regime(req: AnalyzeRequest):
 @router.get("/")
 def market_root():
     return {"message": "Market router is alive"}
+@router.post("/validate")
+def validate_walk_forward(req: AnalyzeRequest):
+    """
+    Run walk-forward validation on a dataset.
+    Returns BIC stability and regime distribution across folds.
+    """
+    try:
+        df_raw = data_service.load_dataset(req.filename)
+        # ⚠️ DO NOT truncate here — pass the full data
+        prep_result = HMMPreprocessor.csv_to_features(df_raw)
+        df = prep_result['df']
+        feature_cols = prep_result['feature_cols']
+
+        summary = walk_forward_validation(
+            df=df,
+            feature_cols=feature_cols,
+            n_states=3,
+            train_size=500,
+            test_size=60,
+            step_size=60,
+            expanding=True,
+        )
+        return summary
+    except Exception as e:
+        logger.error(f"❌ Walk-forward error: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=400, detail=str(e))

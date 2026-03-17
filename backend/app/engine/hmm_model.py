@@ -18,7 +18,8 @@ class RegimeDetector:
         Step 4: Initialize HMM with config
         """
         self.n_states = n_states or model_config.DEFAULT_N_STATES
-        self.random_state = random_state or model_config.RANDOM_STATE
+        self.random_state = random_state if random_state is not None else model_config.RANDOM_STATE
+
         
         logger.info(f"🤖 Initializing HMM with {self.n_states} states")
         
@@ -76,7 +77,19 @@ class RegimeDetector:
         d = self.model.n_features
         
         # Transition matrix + Start probs + Means + Covariances
-        n_params = n * (n - 1) + (n - 1) + n * d + n * d * (d + 1) // 2
+        cov_type = self.model.covariance_type
+        if cov_type == "full":
+            cov_params = n * d * (d + 1) // 2
+        elif cov_type == "diag":
+            cov_params = n * d
+        elif cov_type == "tied":
+            cov_params = d * (d + 1) // 2
+        elif cov_type == "spherical":
+            cov_params = n
+        else:
+            cov_params = n * d  # safe fallback
+
+        n_params = n * (n - 1) + (n - 1) + n * d + cov_params
         return n_params
     
     def predict_states(self, features: np.ndarray) -> np.ndarray:

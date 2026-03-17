@@ -11,7 +11,7 @@ class ModelConfig:
     
     # --- Feature Engineering Parameters ---
     # Lookback window for rolling volatility to filter out high-frequency noise
-    VOLATILITY_WINDOW = 30 
+    VOLATILITY_WINDOW = 60 
     
     # --- HMM Hyperparameters ---
     # Optimal state count for financial markets: typically Bear, Sideways, and Bull
@@ -23,19 +23,19 @@ class ModelConfig:
     
     # --- Automated Model Selection (AIC/BIC) ---
     MIN_N_STATES = 2
-    MAX_N_STATES = 4  # Restricted to avoid overfitting and redundant state splitting
+    MAX_N_STATES = 3  # Restricted to avoid overfitting and redundant state splitting
     SELECTION_METRIC = "bic"  # Bayesian Information Criterion favors parsimonious models
     
     # --- Regime Persistence & Stability ---
     # Minimum consecutive days to qualify as a valid regime transition
-    MIN_REGIME_DURATION = 5
+    MIN_REGIME_DURATION = 10
     # Probability thresholds for evaluating model 'quality' and state stability
-    GOOD_PERSISTENCE_THRESHOLD = 0.10 
-    MODERATE_PERSISTENCE_THRESHOLD = 0.05 
+    GOOD_PERSISTENCE_THRESHOLD = 0.12
+    MODERATE_PERSISTENCE_THRESHOLD = 0.60 
     
     # --- Data Windowing ---
     # Limits training to the most recent window to account for market structural shifts
-    MAX_TRAINING_DAYS = 500 
+    MAX_TRAINING_DAYS = 2520
     
     # --- Semantic Regime Mapping ---
     # Maps latent HMM states to financial terminology based on mean return/volatility
